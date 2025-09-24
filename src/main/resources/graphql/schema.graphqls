@@ -1,0 +1,31 @@
+type Task {
+    id: ID!
+    title: String!
+    description: String
+    status: Status!
+    priority: Priority
+    version: Int!
+}
+
+enum Status {
+    TO_DO
+    IN_PROGRESS
+    DONE
+}
+
+enum Priority {
+    LOW
+    MED
+    HIGH
+}
+
+type Query {
+    task(id: ID!): Task
+    tasks(status: Status, page: Int, size: Int): [Task!]!
+}
+
+type Mutation {
+    createTask(title: String!, description: String, status: Status, priority: Priority): Task!
+    updateTask(id: ID!, title: String, description: String, status: Status, priority: Priority, version: Int): Task!
+    deleteTask(id: ID!): Boolean!
+}

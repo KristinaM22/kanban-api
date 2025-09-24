@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    container_name: kanban-db
+    restart: always
+    environment:
+      POSTGRES_USER: kanban
+      POSTGRES_PASSWORD: kanban
+      POSTGRES_DB: kanban_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: kanban-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/kanban_db
+      SPRING_DATASOURCE_USERNAME: kanban
+      SPRING_DATASOURCE_PASSWORD: kanban
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
